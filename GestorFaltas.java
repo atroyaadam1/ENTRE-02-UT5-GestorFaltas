@@ -14,7 +14,7 @@ public class GestorFaltas {
     private Estudiante[] estudiantes;
 
     public GestorFaltas(int n) {
-         
+         estudiantes = new Estudiante[n];
     }
 
     /**
@@ -22,7 +22,7 @@ public class GestorFaltas {
      * false en otro caso
      */
     public boolean cursoCompleto() {
-        return false;
+        return total >= estudiantes.length;
     }
 
     /**
@@ -38,7 +38,12 @@ public class GestorFaltas {
      *    
      */
     public void addEstudiante(Estudiante nuevo) {
-        
+        if( total < estudiantes.length){
+            estudiantes[total] = nuevo;
+            total++;
+        } else {
+            System.out.println("ya esta el curso completo");
+        }
 
     }
 
@@ -53,7 +58,12 @@ public class GestorFaltas {
      */
     public int buscarEstudiante(String apellidos) {
          
-        return 0;
+        for(int i = 0; i < estudiantes.length; i++){
+            if(estudiantes[i].getNombre().equalsIgnoreCase(apellidos)){
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -63,32 +73,37 @@ public class GestorFaltas {
      */
     public String toString() {
         
-        return null;
-
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < total; i++){
+            sb.append(estudiantes[i].toString() + "\n--------------------\n");
+        }
+        return sb.toString();
     }
 
-    /**
-     *  Se justifican las faltas del estudiante cuyos apellidos se proporcionan
-     *  El método muestra un mensaje indicando a quién se ha justificado las faltas
-     *  y cuántas
-     *  
-     *  Se asume todo correcto (el estudiante existe y el nº de faltas a
-     *  justificar también)
-     */
-    public void justificarFaltas(String apellidos, int faltas) {
+    
+
+    // /**
+     // *  Se justifican las faltas del estudiante cuyos apellidos se proporcionan
+     // *  El método muestra un mensaje indicando a quién se ha justificado las faltas
+     // *  y cuántas
+     // *  
+     // *  Se asume todo correcto (el estudiante existe y el nº de faltas a
+     // *  justificar también)
+     // */
+    // public void justificarFaltas(String apellidos, int faltas) {
          
 
-    }
+    // }
 
-    /**
-     * ordenar los estudiantes de mayor a menor nº de faltas injustificadas
-     * si coinciden se tiene en cuenta las justificadas
-     * Método de selección directa
-     */
-    public void ordenar() {
+    // /**
+     // * ordenar los estudiantes de mayor a menor nº de faltas injustificadas
+     // * si coinciden se tiene en cuenta las justificadas
+     // * Método de selección directa
+     // */
+    // public void ordenar() {
         
 
-    }
+    // }
 
     /**
      * anular la matrícula (dar de baja) a 
@@ -96,7 +111,14 @@ public class GestorFaltas {
      */
     public void anularMatricula() {
          
-
+            for(int i = 0; i < total; i++){
+            if(estudiantes[i].getFaltasNoJustificadas() >= 30){
+                for(int j = i; j < total; j++){
+                    estudiantes[j] = estudiantes[j + 1];
+                }
+                total--;
+            }
+        }
     }
 
     /**
