@@ -2,7 +2,10 @@
  * Un objeto de esta clase guarda la información de un estudiante
  *
  */
+import java.util.*;
+import java.lang.String;
 public class Estudiante {
+
     private final static String SEPARADOR = ",";
     private String nombre;
     private String apellidos;
@@ -17,10 +20,33 @@ public class Estudiante {
      *  
      */
     public Estudiante(String lineaDatos) {
-         
+        String[] nuevaLinea = lineaDatos.split(" ");
+        this.nombre = nombreCompuesto(nuevaLinea[0]);
+        this.apellidos = nuevaLinea[1].trim().toUpperCase();
+        this.faltasNoJustificadas = Integer.parseInt(nuevaLinea[2].trim());
+        this.faltasJustificadas = Integer.parseInt(nuevaLinea[3]);
 
     }
 
+    /**
+     * 
+     */
+    public String nombreCompuesto(String nombre) {
+        String[] nombres = nombre.split(SEPARADOR);
+        String nombreInicio = "";
+        String nombreFinal ="";
+        for ( int i = 0; i < nombres.length; i++){
+                if (nombres[i] != " "){
+                    nombreInicio += nombres[i].charAt(0);
+                    nombreFinal += nombreInicio.toUpperCase() + SEPARADOR;
+                }
+            else if(i == (nombres.length - 1)){
+                nombreInicio += nombres[i].charAt(0);
+                nombreFinal += nombreInicio + nombres[i].substring(0);
+            } 
+        } 
+        return nombreFinal;
+    }
 
     /**
      * accesor para el nombre completo
@@ -93,13 +119,25 @@ public class Estudiante {
      * (ver enunciado)
      */
     public String toString() {
-        
-        return null;
+        String faltas = "";
+        if(this.faltasNoJustificadas == 0){
+                faltas += "no hay faltas";
+        }else if(this.faltasNoJustificadas >= 30){
+            faltas += "10 20 30";
+        }else if(this.faltasNoJustificadas >= 20){
+            faltas += "10 20";
+        }else if (this.faltasNoJustificadas >= 10){
+            faltas += "10";
+        }
+        String lista = apellidos + "," + nombre;
+        String str = String.format("%-24s %-35s",
+        "Apellidos y Nombre:",lista,"\nFaltas No Justificadas:", faltasNoJustificadas,
+        "\nFaltas Justificadas:", faltasJustificadas, "\nfaltas:",faltas);
+        return str;
 
     }
 
-
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         Estudiante e1 = new Estudiante("  ander ibai  ,  Ruiz Sena , 12, 23");
         System.out.println(e1);
         System.out.println();
@@ -113,7 +151,6 @@ public class Estudiante {
         Estudiante e4 = new Estudiante("julen, Duque Puyal, 5, 55");
         System.out.println(e4);
         System.out.println();
-        
 
         System.out.println("---------------------------------");
         e1.justificar(3);

@@ -10,7 +10,8 @@ import java.util.Scanner;
  *
  */
 public class GestorFaltas {
-     
+    private int total;
+    private Estudiante[] estudiantes;
 
     public GestorFaltas(int n) {
          
