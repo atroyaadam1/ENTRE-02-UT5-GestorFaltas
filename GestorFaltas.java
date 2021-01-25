@@ -7,14 +7,14 @@ import java.util.Scanner;
  * curso (leyendo la información de un fichero de texto) y 
  * emitir listados con las faltas de los estudiantes, justificar faltas, 
  * anular matrícula dependiendo del nº de faltas, .....
- *
+ * @author - Anthonny Troya
  */
 public class GestorFaltas {
     private int total;
     private Estudiante[] estudiantes;
 
     public GestorFaltas(int n) {
-         estudiantes = new Estudiante[n];
+        estudiantes = new Estudiante[n];
     }
 
     /**
@@ -23,6 +23,24 @@ public class GestorFaltas {
      */
     public boolean cursoCompleto() {
         return total >= estudiantes.length;
+    }
+
+    /**
+     * buscar un estudiante por sus apellidos
+     * Si está se devuelve la posición, si no está se devuelve -1
+     * Es indiferente mayúsculas / minúsculas
+     * Puesto que el curso está ordenado por apellido haremos la búsqueda más
+     * eficiente
+     *  
+     */
+    public int buscarEstudiante(String apellidos) {
+
+        for(int i = 0; i < estudiantes.length; i++){
+            if(estudiantes[i].getNombre().equalsIgnoreCase(apellidos)){
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -38,32 +56,15 @@ public class GestorFaltas {
      *    
      */
     public void addEstudiante(Estudiante nuevo) {
-        if( total < estudiantes.length){
+        if( total < estudiantes.length && 
+        buscarEstudiante(nuevo.getApellidos()) == -1){
             estudiantes[total] = nuevo;
             total++;
-        } else {
+        } else if(buscarEstudiante(nuevo.getApellidos()) == 1){
+            System.out.println("El estudiante se encuentra en el curso");
+        }else {
             System.out.println("ya esta el curso completo");
         }
-
-    }
-
-
-    /**
-     * buscar un estudiante por sus apellidos
-     * Si está se devuelve la posición, si no está se devuelve -1
-     * Es indiferente mayúsculas / minúsculas
-     * Puesto que el curso está ordenado por apellido haremos la búsqueda más
-     * eficiente
-     *  
-     */
-    public int buscarEstudiante(String apellidos) {
-         
-        for(int i = 0; i < estudiantes.length; i++){
-            if(estudiantes[i].getNombre().equalsIgnoreCase(apellidos)){
-                return i;
-            }
-        }
-        return -1;
     }
 
     /**
@@ -72,7 +73,7 @@ public class GestorFaltas {
      *  
      */
     public String toString() {
-        
+
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < total; i++){
             sb.append(estudiantes[i].toString() + "\n--------------------\n");
@@ -81,37 +82,31 @@ public class GestorFaltas {
     }
 
     
-
-    // /**
-     // *  Se justifican las faltas del estudiante cuyos apellidos se proporcionan
-     // *  El método muestra un mensaje indicando a quién se ha justificado las faltas
-     // *  y cuántas
-     // *  
-     // *  Se asume todo correcto (el estudiante existe y el nº de faltas a
-     // *  justificar también)
-     // */
-    // public void justificarFaltas(String apellidos, int faltas) {
-         
-
-    // }
-
-    // /**
-     // * ordenar los estudiantes de mayor a menor nº de faltas injustificadas
-     // * si coinciden se tiene en cuenta las justificadas
-     // * Método de selección directa
-     // */
-    // public void ordenar() {
-        
-
-    // }
-
-    /**
-     * anular la matrícula (dar de baja) a 
-     * aquellos estudiantes con 30 o más faltas injustificadas
+    /**  Se justifican las faltas del estudiante cuyos apellidos se proporcionan
+     *  El método muestra un mensaje indicando a quién se ha justificado las faltas
+     *  y cuántas
+     *  
+     *  Se asume todo correcto (el estudiante existe y el nº de faltas a
+     *  justificar también)
      */
+    public void justificarFaltas(String apellidos, int faltas) {
+
+    }
+
+    /**ordenar los estudiantes de mayor a menor nº de faltas injustificadas
+     * si coinciden se tiene en cuenta las justificadas
+     * Método de selección directa
+     */
+    public void ordenar() {
+
+    }
+
+    /** anular la matrícula (dar de baja) a 
+    * aquellos estudiantes con 30 o más faltas injustificadas
+    */
     public void anularMatricula() {
-         
-            for(int i = 0; i < total; i++){
+
+        for(int i = 0; i < total; i++){
             if(estudiantes[i].getFaltasNoJustificadas() >= 30){
                 for(int j = i; j < total; j++){
                     estudiantes[j] = estudiantes[j + 1];
