@@ -1,7 +1,6 @@
 /**
  * Punto de entrada a la aplicación
  *  * @author - Anthonny Troya
- * @version (version number or date here)
  */
 public class TestGestorFaltas {
     /**
