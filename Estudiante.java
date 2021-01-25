@@ -1,6 +1,7 @@
 /**
  * Un objeto de esta clase guarda la información de un estudiante
- *
+ * @author - Anthonny Troya
+ * @version (version number or date here)
  */
 import java.util.*;
 import java.lang.String;
@@ -11,7 +12,7 @@ public class Estudiante {
     private String apellidos;
     private int faltasNoJustificadas;
     private int faltasJustificadas;
-
+    private Apercibimientos apercibimiento;
     /**
      *  
      *  Inicializa los atributos a partir de la información recibida
@@ -20,12 +21,11 @@ public class Estudiante {
      *  
      */
     public Estudiante(String lineaDatos) {
-        String[] nuevaLinea = lineaDatos.split(" ");
-        this.nombre = nombreCompuesto(nuevaLinea[0]);
-        this.apellidos = nuevaLinea[1].trim().toUpperCase();
-        this.faltasNoJustificadas = Integer.parseInt(nuevaLinea[2].trim());
-        this.faltasJustificadas = Integer.parseInt(nuevaLinea[3]);
-
+        String[] nuevaLista = lineaDatos.split(SEPARADOR);
+        this.nombre = nombreCompuesto(nuevaLista[0]);
+        this.apellidos = nuevaLista[1].toUpperCase();
+        this.faltasNoJustificadas = Integer.parseInt(nuevaLista[2]);
+        this.faltasJustificadas = Integer.parseInt(nuevaLista[3]);
     }
 
     /**
@@ -120,14 +120,14 @@ public class Estudiante {
      */
     public String toString() {
         String faltas = "";
-        if(this.faltasNoJustificadas == 0){
-                faltas += "no hay faltas";
-        }else if(this.faltasNoJustificadas >= 30){
-            faltas += "10 20 30";
-        }else if(this.faltasNoJustificadas >= 20){
-            faltas += "10 20";
-        }else if (this.faltasNoJustificadas >= 10){
-            faltas += "10";
+        if(this.faltasNoJustificadas < 10){
+                faltas += "sin apercibimientos";
+        }else if(this.faltasNoJustificadas < 20){
+            faltas += apercibimiento.DIEZ;
+        }else if(this.faltasNoJustificadas < 30){
+            faltas += apercibimiento.DIEZ + ""+apercibimiento.VEINTE;
+        }else {
+            faltas += apercibimiento.DIEZ + " "   + apercibimiento.VEINTE+ " " + apercibimiento.TREINTA;
         }
         String lista = apellidos + "," + nombre;
         String str = String.format("%-24s %-35s",

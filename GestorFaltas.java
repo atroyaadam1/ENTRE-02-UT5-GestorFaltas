@@ -15,6 +15,7 @@ public class GestorFaltas {
 
     public GestorFaltas(int n) {
         estudiantes = new Estudiante[n];
+        this.total = 0;
     }
 
     /**
@@ -22,7 +23,7 @@ public class GestorFaltas {
      * false en otro caso
      */
     public boolean cursoCompleto() {
-        return total >= estudiantes.length;
+        return total == estudiantes.length;
     }
 
     /**
@@ -81,7 +82,6 @@ public class GestorFaltas {
         return sb.toString();
     }
 
-    
     /**  Se justifican las faltas del estudiante cuyos apellidos se proporcionan
      *  El método muestra un mensaje indicando a quién se ha justificado las faltas
      *  y cuántas
@@ -90,7 +90,10 @@ public class GestorFaltas {
      *  justificar también)
      */
     public void justificarFaltas(String apellidos, int faltas) {
-
+        Estudiante justificado = estudiantes[buscarEstudiante(apellidos)];
+        justificado.justificar(faltas);
+        System.out.println("Justificadas " + faltas + " a " 
+            + justificado.getApellidos() + "," + justificado.getNombre() + "\n") ; 
     }
 
     /**ordenar los estudiantes de mayor a menor nº de faltas injustificadas
@@ -98,12 +101,22 @@ public class GestorFaltas {
      * Método de selección directa
      */
     public void ordenar() {
-
+        for (int i = 0; i < total - 1; i++) {
+            int posmin = i;
+            for (int j = i + 1; j < total; j++) {
+                if (estudiantes[posmin].getFaltasNoJustificadas() > estudiantes[j].getFaltasNoJustificadas()) {
+                    posmin = j;
+                }
+            }
+            Estudiante aux = estudiantes[posmin];
+            estudiantes[posmin] = estudiantes[i];
+            estudiantes[i] = aux;
+        }
     }
 
     /** anular la matrícula (dar de baja) a 
-    * aquellos estudiantes con 30 o más faltas injustificadas
-    */
+     * aquellos estudiantes con 30 o más faltas injustificadas
+     */
     public void anularMatricula() {
 
         for(int i = 0; i < total; i++){
